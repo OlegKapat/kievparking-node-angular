@@ -1,0 +1,38 @@
+<div class="container-fluid">
+    <h4>Власники паркомісць</h4>
+  <div class="row">
+      <div class="col s12 table" *ngIf="parkingOwner$ | async as parkingOwner; else loader" >
+          <table class="cinereousTable striped responsive-table highlight" >
+              <thead>
+              <tr>
+              <th>№</th>
+              <th>Ім'я</th>
+              <th>Email</th>
+              <th>Адреса</th>
+              <th>Місце</th>
+              <th>Телефон</th>
+              <th>Дата реєстрації</th>
+              <th></th>
+              </tr>
+              </thead>
+              <tbody >
+
+           <tr *ngFor=" let owner of parkingOwner; let index=index" >
+              <td>{{index+1}}</td>
+              <td>{{owner.name}}</td>
+              <td>{{owner.email}}</td>
+              <td>{{owner.information.parkingaddress}}</td>
+              <td>{{owner.information.place}}</td>
+              <td>{{owner.information.contactphone}}</td>
+              <td>{{owner.date | date}}</td>
+              <td><button type="button" class="waves-effect waves-light btn" (click)="deleteUser(owner._id)">Видалити</button></td>
+              </tr>
+              </tbody>
+              </table>
+      </div>
+
+  </div>
+  <ng-template #loader>
+    <app-loader></app-loader>
+</ng-template>
+</div>

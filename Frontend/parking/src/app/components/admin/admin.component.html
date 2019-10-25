@@ -1,0 +1,43 @@
+
+<main>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col s12 card-panel teal lighten-2">
+           <h3>Панель адміністратора керування сайтом</h3>
+      </div>
+      <section>
+        <div class="row">
+          <div class="col s4">
+            <div class="menu">
+                  <a [routerLink]="'parking'" routerLinkActive="active">
+                    <div id="btn1" class="button">
+                      <h5> Паркінги <i class=" small material-icons">directions_car</i></h5>
+
+                    </div>
+                  </a>
+
+                  <a [routerLink]="'owner'" routerLinkActive="active">
+                    <div id="btn2" class="button">
+                      <h5>Власники паркомісць <i class=" small material-icons">supervisor_account</i></h5>
+                    </div>
+                  </a>
+
+                  <a [routerLink]="'siteuser'" routerLinkActive="active">
+                    <div id="btn3" class="button">
+                      <h5>Користувачі <i class=" small material-icons">perm_identity</i></h5>
+                    </div>
+                  </a>
+
+          </div>
+        </div>
+
+            <div class="col s8">
+
+              <router-outlet></router-outlet>
+            </div>
+
+        </div>
+      </section>
+      </div>
+  </div>
+</main>

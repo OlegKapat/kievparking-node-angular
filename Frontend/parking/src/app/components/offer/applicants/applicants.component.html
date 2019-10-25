@@ -1,0 +1,37 @@
+<section>
+  <form [formGroup]="applicantForm" (ngSubmit)="onSubmit()" class="col s12">
+      <div class="input-field col s12">
+          <input id="name" type="text" class="validate input-field col s12" formControlName='name'>
+          <label for="name">Імя</label>
+        </div>
+        <div class="input-field col s12">
+            <input id="city" type="text" class="validate input-field col s12" formControlName='city'>
+            <label for="city">Місто</label>
+          </div>
+          <div class="input-field col s12">
+              <input id="district" type="text" class="validate input-field col s12" formControlName='discrict'>
+              <label for="district">Район</label>
+          </div>
+          <div class="input-field col s12">
+              <input id="address" type="text" class="validate input-field col s12" formControlName='address'>
+              <label for="address">Адрес</label>
+            </div>
+            <div class="input-field col s12">
+                <input id="place" type="text" class="validate input-field col s12" formControlName='place'>
+                <label for="place">Місце</label>
+              </div>
+              <div class="input-field col s6" >
+                <input  type="text"  formControlName='from' class="datepicker" name="datepicker" materialize="pickadate"  #picker1 >
+                <label>Початок</label>
+              </div>
+              <div class="input-field col s6" >
+                <input type="text" formControlName='to' class="datepicker"  name="datepicker" materialize="pickadate"  #picker2  >
+                <label>Кінець</label>
+                </div>
+                <p>{{date1}}</p>
+                <div class="buttonrow">
+                <button type="submit" class="waves-effect waves-light btn-large pulse"[disabled]="owner">Здати в оренду</button>&nbsp;
+                <button type="submit" class="waves-effect waves-light btn-large pulse" [disabled]="!owner">Зняти в аренду</button>
+                </div>
+  </form>
+</section>

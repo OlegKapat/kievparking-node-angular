@@ -1,0 +1,64 @@
+.menu{
+  min-width: 300px;
+  min-height: 300px;
+}
+.teal{
+  margin-top: 20px;
+  text-align: center;
+}
+h5 {
+  font-family: verdana, sans-serif;
+  font-weight: bold;
+  text-align: center;
+  position:relative;
+  top: -10px;
+}
+
+a {
+  text-decoration: none;
+}
+
+#btn1 {
+  top: 200px;
+}
+
+#btn2 {
+  top: 300px;
+}
+
+#btn3 {
+  top: 400px;
+}
+
+div.button {
+  background-color: #9eb2f3;
+  color: #2c3e50;
+  border: none;
+  border-radius: 30px;
+  width: 500px;
+  height: 60px;
+  position: absolute;
+  left: -410px;
+  transition: .7s ease;
+}
+
+div.button:hover {
+  background-color: #ffffff;
+  position: absolute;
+  left: -50px;
+  width: 480px;
+  border-radius: 0px;
+  box-shadow: 0px 5px 0px #c0392b;
+}
+
+div.button:active {
+  background-color: #2c3e50;
+  transition: 0s;
+  color: #ecf0f1;
+}
+.small{
+  float: right;
+  margin-right: 30px;
+  margin-top: 10px;
+
+}

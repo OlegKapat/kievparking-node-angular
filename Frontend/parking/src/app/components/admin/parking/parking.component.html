@@ -1,0 +1,140 @@
+<div class="container">
+  <h4>Перелік паркінгів</h4>
+  <div class="row">
+      <div class="col s12 table" *ngIf="parkingList$ | async as parkingList; else loader" >
+          <table class="cinereousTable striped responsive-table highlight" >
+              <thead>
+              <tr>
+              <th>Місто</th>
+              <th>Район</th>
+              <th>Вулиця</th>
+              <th>Будинок №</th>
+              <th>Кількість місць</th>
+              <th>Інформація</th>
+              <th>Охорона</th>
+              </tr>
+              </thead>
+              <tbody  >
+
+           <tr *ngFor=" let site of parkingList"  (click)="getItem(site._id)" >
+              <td>{{site.city}}</td>
+              <td>{{site.district}}</td>
+              <td>{{site.street}}</td>
+              <td>{{site.building}}</td>
+              <td>{{site.numberOfPlace}}</td>
+              <td>{{site.information}}</td>
+              <td>{{site.security}}</td>
+              </tr>
+
+              </tbody>
+              </table>
+      </div>
+
+    <ng-template #loader>
+        <app-loader></app-loader>
+    </ng-template>
+  </div>
+  <!-- Модальне вікно для картки -->
+  <div class="row">
+    <div class="col s12 m6 ">
+       <div id="card" class="modal" #card>
+    <div class="modal-content">
+      <h4>Картка паркінга </h4>
+    </div>
+
+
+        <div class="card">
+          <div class="card-image">
+            <img [src]="imageParking">
+            <span class="card-title">{{street}}</span>
+          </div>
+          <div class="card-content">
+           <span>Місто:</span><i> {{city}}</i><br>
+           <span>Район:</span><i> {{rayon}}</i><br>
+           <span>Вулиця:</span><i> {{street}}</i><br>
+           <span>Будинок:</span><i> {{numberOfBuilding}}</i><br>
+           <span>Інформація:</span><i> {{info}}</i><br>
+           <span>Охорона:</span><i> {{ohrana}}</i><br>
+          </div>
+        </div>
+        <div class="button-group">
+        <button type="button" class="waves-effect waves-light btn" (click)="deleteItem()">Видалити</button>&nbsp;
+        <button type="button" class="waves-effect waves-light btn" (click)="close()">Закрити</button>
+      </div>
+      </div>
+    </div>
+  </div>
+  <button type="button" class="waves-effect waves-light btn fortable"  (click)="showAddForm()">Додати новий </button>
+   <div class="row addnew" [style.display]="isNew ?'block' : 'none'">
+
+
+
+
+  <div class="col s12">
+  <form  (ngSubmit)=onSubmit() [formGroup]="parkingForm" >
+    <div class="row">
+      <div class="input-field col s6 "  >
+        <select  id="addressselect" formControlName='city' #select>
+          <option  [ngValue]=""  disabled selected >Виберіть місто</option>
+          <option  [ngValue]="address" *ngFor=" let address of addresslist">{{address}}</option>
+        </select>
+        <label>Місто</label>
+      </div>
+      <div class="input-field col s6 "  >
+        <select  formControlName='district' #selectdistrict >
+          <option  [value]=""  disabled selected >Виберіть район</option>
+          <option  [value]="district" *ngFor=" let district of districts">{{district}}</option>
+        </select>
+        <label>Район</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s6" >
+        <input id="street" type="text" class="validate" formControlName="street" >
+        <label for="street">Вулиця</label>
+      </div>
+      <div class="input-field col s6">
+        <input id="building" type="number" formControlName='building' >
+        <label for="building">Номер будинку</label>
+      </div>
+    </div>
+    <div class="row" >
+      <div class="input-field col s4">
+        <input id="numberOfPlace" type="number" class="validate" formControlName='numberOfPlace'>
+        <label for="numberOfPlace">Кількість місць</label>
+      </div>
+
+      <div class=" input-field col s8">
+          <input id="description" type="text" formControlName='information' >
+          <label for="description">Інформація про паркінг</label>
+      </div>
+    </div>
+      <div class="row">
+          <div class="input-field col s6 "  >
+              <select  formControlName='security' #selectsecurity>
+                <option  [value]=""  disabled selected >Тип охорони</option>
+                <option  [value]="sec" *ngFor=" let sec of security">{{sec}}</option>
+              </select>
+              <label>Вибір типу охорони</label>
+            </div>
+            <div class="upload-btn-wrapper col s6">
+                <input type="file" name="myfile" class="dn" (change)="onFileUpload($event)" #input formControlName='imageSrc'/>
+                <button class="btn" type="button" (click)="triggerClick()" >Виберіть файл зображення</button>
+                <div class="mx-auto">
+                    <img [src]="imagePrevie" class="rounded z-depth-1-half document h200" *ngIf="imagePrevie" >
+                  </div>
+              </div>
+      </div>
+      <div class="button-group">
+      <button type="submit" class="waves-effect waves-light btn">Зареєструвати</button>&nbsp;
+      </div>
+  </form>
+
+</div>
+</div>
+</div>
+
+
+
+
+

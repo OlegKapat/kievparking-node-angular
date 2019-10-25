@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ua">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Київ паркінг</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+</head>
+<body>
+  <nav class="white" role="navigation">
+    <div class="nav-wrapper container">
+      <a id="logo-container" href="#" class="brand-logo"><img src="../assets/images/Logo.png"></a>
+      <ul class="right hide-on-med-and-down">
+          <li><a href="#">Головна</a></li>
+        <li><a href="#">Про нас</a></li>
+        <li><a [routerLink]= "['/offer']" routerLinkActive="active">Бронювати</a></li>
+        <li><a href="#">Контакты</a></li>
+        <li> <a [routerLink]="'/'" (click)="deleteSession()"><i class=" medium material-icons">exit_to_app</i></a></li>
+      </ul>
+
+      <ul id="nav-mobile" class="sidenav">
+        <li><a href="#">Про нас</a></li>
+      </ul>
+      <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">Меню</i></a>
+    </div>
+  </nav>
+<div>
+  <router-outlet></router-outlet>
+</div>
+
+
+  <footer class="page-footer teal">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Паркінг на Палладіна</h5>
+          <p class="grey-text text-lighten-4">Сервіс з пошуку та бронювання вільних місць для паркування машин з охороною. Співпрацюємо з іншими паркінгами, автомобільними стоянками та ОСББ.</p>
+
+
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Корисні посилання</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Новини автобізнесу</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      Розробка <a class="brown-text text-lighten-3" href="http://lito-webdesign.com.ua">Lito-WEBDesign</a>
+      </div>
+    </div>
+  </footer>
+  <!--  Scripts-->
+  <script  type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  </body>
+</html>

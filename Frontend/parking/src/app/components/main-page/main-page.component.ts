@@ -1,0 +1,173 @@
+
+import { Component, OnInit,ViewChild,ElementRef,AfterViewInit,OnDestroy, AfterContentInit, ChangeDetectionStrategy, OnChanges} from '@angular/core';
+import {FormGroup,FormControl,Validators} from '@angular/forms'
+import {MaterialService,MaterialInstance} from '../../shared/classes/material.service';
+import { AuthService } from './../../shared/services/auth.service';
+import * as M from "materialize-css";
+import { Subscription } from 'rxjs';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+import { ParkingService } from '../admin/shared/services/parking.service';
+import { Parking } from '../admin/shared/interfaces/parking';
+import { switchMap,tap } from 'rxjs/operators';
+
+
+
+@Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'app-main-page',
+  templateUrl: './main-page.component.html',
+  styleUrls: ['./main-page.component.css']
+})
+export class MainPageComponent implements OnInit,AfterViewInit,OnDestroy,AfterContentInit {
+  options={};
+  @ViewChild('modalEnter',{static:false}) modalenterRef:ElementRef;
+  @ViewChild('login',{static:false}) loginRef:ElementRef;
+  @ViewChild('registration',{static:false}) registrationRef:ElementRef;
+  @ViewChild('input',{static:true}) inputRef:ElementRef;
+  @ViewChild('select',{static:true}) selectRef:ElementRef;
+  info:string
+  modal:MaterialInstance;
+  modalLogin:MaterialInstance;
+  modalRegister:MaterialInstance;
+  image:File;
+  imagePrevie: string | ArrayBuffer;
+  loginForm:FormGroup;
+  registrationForm:FormGroup;
+  checkOwner:boolean;
+  aSubLogin:Subscription;
+  aSubRegister:Subscription;
+  parkingItem:Parking[]=[];
+  parkingAddress:string[]=["Палладіна,18/30","Палладіна,22","Булаховського,4"];
+  owner:boolean;
+  name:string
+  somedata:any
+
+  constructor(private auth:AuthService, private activeroute:ActivatedRoute,
+               private parkingService:ParkingService,private router:Router) { }
+
+  ngOnInit() {
+   const elems = document.querySelectorAll('.parallax');
+    const instances = M.Parallax.init(elems, this.options);
+    this.loginForm=new FormGroup({
+      email:new FormControl(null,[Validators.required,Validators.email]),
+      password:new FormControl(null,[Validators.required,Validators.minLength(6)])
+    })
+
+
+    this.activeroute.queryParams.subscribe((params:Params)=> {
+        // tslint:disable-next-line:no-string-literal
+        if(params['registered']) {
+            // Заходите в систему зі своїми данними
+        MaterialService.toast("Раді вас вітати на нашoму сайті")
+        } else if (params['accessDinied']) {
+        MaterialService.toast("Для початку роботи треба авторизуватись")
+        } else if(params['sessionFailed']){
+          MaterialService.toast("Поточна сессія закінчилась")
+        } else if(params['login']){
+          MaterialService.toast('Вітаємо вас')
+
+        }
+    })
+
+    this.checkOwner=false;
+    this.registrationForm=new FormGroup({
+       name:new FormControl(null,Validators.required),
+       email:new FormControl(null,[Validators.required,Validators.email]),
+       password:new FormControl(null,[Validators.required,Validators.min(6)]),
+       owner:new FormControl(),
+       information:new FormGroup({
+       imageSrc:new FormControl(),
+       address:new FormControl('',{validators:Validators.required}),
+       phone:new FormControl('',Validators.required),
+       place:new FormControl('',[Validators.required,Validators.pattern(/^(\d){1,2}$/)])
+       })
+    })
+
+  }
+  ngAfterViewInit(){
+    this.modal=MaterialService.initModal(this.modalenterRef);
+    this.modalLogin=MaterialService.initModal(this.loginRef);
+    this.modalRegister=MaterialService.initModal(this.registrationRef);
+    MaterialService.initSelect(this.selectRef);
+    MaterialService.updateTextInput();
+
+  }
+
+   firstEnter(){
+     this.modal.open();
+   }
+   openYes(){
+     this.modal.close();
+     this.modalLogin.open();
+   }
+   openNo(){
+     this.modal.close();
+     this.modalRegister.open();
+   }
+   onFileUpload(event:any){
+      const file=event.target.files[0];
+      this.image=file;
+
+      const reader=new FileReader();
+      reader.onload=()=>{
+        this.imagePrevie=reader.result
+      }
+      reader.readAsDataURL(file);
+   }
+   triggerClick(){
+    this.inputRef.nativeElement.click();
+   }
+  close(){
+    this.auth.logOut()
+    this.router.routeReuseStrategy.shouldReuseRoute = function(){
+      return false; // перегрузка основної сторінки
+      };
+
+  }
+  onSubmitLogin(){
+    this.aSubLogin=this.auth.login(this.loginForm.value).subscribe((data)=>{
+      localStorage['owner']=JSON.stringify(data.owner)
+      if(data){
+
+        MaterialService.toast(`Вітаємо ${data.name}`)
+        this.router.navigate(['/offer'],{queryParams:{
+          login:true,
+          owner:data.owner
+       }})
+
+      }
+
+    },error=>MaterialService.toast("Невірний логін чи пароль"))
+
+    this.modalLogin.close()
+    this.loginForm.reset();
+  }
+  ngOnDestroy(){
+    if(this.aSubLogin ) {
+      this.aSubLogin.unsubscribe();
+      }
+      else if(this.aSubRegister){
+        this.aSubRegister.unsubscribe()
+      }
+  }
+  onSubmitRegister(){
+    this. aSubRegister=this.auth.registration(this.registrationForm.value, this.image)
+    .subscribe(()=>{ this.router.navigate(['/'],{queryParams:{
+      registered:true
+    }}),MaterialService.toast("Користувач створений")}
+    ),error=>{MaterialService.toast(`Проблеми з реєстрацією  ${error.error.message}`)}
+
+    this.modalRegister.close();
+
+
+  }
+onChanges(){
+  this.registrationForm.get('owner').valueChanges.pipe(tap(()=>{this.checkOwner=!this.checkOwner}),switchMap(()=> {
+   return this.parkingService.getData() })).subscribe((data)=>{this.parkingItem=data}),error=>MaterialService.toast(error.message)
+}
+ngAfterContentInit(){
+  this.onChanges();
+
+}
+
+}

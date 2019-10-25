@@ -1,0 +1,21 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col s12">
+      <h5>Зареєстровані як {{owner ? 'власник':'орендатор'}}</h5>
+
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col s12 main">
+     <ng-template [ngIf]="'owner'">
+      <app-applicants (childSubmit)=submitForm($event)></app-applicants>
+     </ng-template>
+     <ng-template [ngIf]="!'owner'">
+        <app-rent></app-rent>
+     </ng-template>
+    </div>
+
+
+
+</div>

@@ -1,0 +1,66 @@
+.dn{
+  display: none;
+}
+img{
+  max-width:150px;
+  max-height: 150px;
+}
+button.fortable{
+  text-align: unset;
+  margin-bottom: 30px;
+}
+.addnew{
+  margin-top: 20px;
+}
+.view{
+  width:200px;
+  height: 200px;
+}
+.modal-content{
+  text-align: center;
+}
+.card{
+  text-align: center;
+}
+.card-image{
+  height: 200px;
+  width: auto;
+  padding: 20px;
+}
+.button-group{
+  text-align: center;
+  padding: 20px;
+}
+
+/* table.cinereousTable {
+  border: 3px solid #948473;
+  background-color: rgb(250, 247, 244);
+  width: 100%;
+  float: right;
+}
+table.cinereousTable td, table.cinereousTable th {
+  border: 1px solid #948473;
+  padding: 6px 6px;
+}
+table.cinereousTable tbody td {
+  font-size: 13px;
+}
+table.cinereousTable thead {
+  background: #948473;
+  background: -moz-linear-gradient(top, #afa396 0%, #9e9081 66%, #948473 100%);
+  background: -webkit-linear-gradient(top, #afa396 0%, #9e9081 66%, #948473 100%);
+  background: linear-gradient(to bottom, #afa396 0%, #9e9081 66%, #948473 100%);
+}
+table.cinereousTable thead th {
+  font-size: 20px;
+  font-weight: bold;
+  color: #F0F0F0;
+  text-align: center;
+  border-left: 2px solid #948473;
+}
+
+
+table.cinereousTable tr:hover{
+cursor: pointer;
+background-color: #afa396;
+} */
