@@ -8,11 +8,11 @@
   <hr>
   <div class="row">
     <div class="col s12 main">
-     <ng-template [ngIf]="'owner'">
+     <ng-template [ngIf]="owner===true">
       <app-applicants (childSubmit)=submitForm($event)></app-applicants>
      </ng-template>
-     <ng-template [ngIf]="!'owner'">
-        <app-rent></app-rent>
+     <ng-template [ngIf]="owner===false">
+        <app-rent  ></app-rent>
      </ng-template>
     </div>
 

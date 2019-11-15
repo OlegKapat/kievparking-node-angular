@@ -8,12 +8,18 @@ export interface User{
 }
 export interface AdditionInformation{
   address:string,
+  city:string,
+  district:string,
   imageSrc?:string,
   phone:string,
   place:any
 }
 export interface Application{
   name:string,
+  city:string,
+  district:string,
+  street:string,
+  place:number,
   from:string,
   to:string,
   description:string

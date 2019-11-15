@@ -3,6 +3,7 @@ import {User} from '../interfaces/interfaces';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import {tap, catchError} from 'rxjs/operators'
+import { Parking } from 'src/app/components/admin/shared/interfaces/parking';
 
 @Injectable({
   providedIn: 'root'
@@ -46,19 +47,21 @@ export class AuthService {
     this.setToken(null)
     localStorage.clear()
   }
-  registration(user:User, image?:File):Observable<User> {
-
+  registration(user:User,selectedAddress:string,selectedId:string,image?:File):Observable<User> {
+     
       const fd:any=new FormData();
       if(user.owner){
         fd.append('email',user.email)
         fd.append('password',user.password)
         fd.append('owner',user.owner)
         fd.append('name',user.name)
-        fd.append('address',user.information.address)
+        fd.append('address',selectedAddress)
         fd.append('phone',user.information.phone)
-        fd.append('place',user.information.place)
+        fd.append('city',user.information.city)
+        fd.append('district',user.information.district)
+        fd.append('place',user.information.place),
+        fd.append('parkingId', selectedId)
         fd.append('image', image, user.information.imageSrc)
-
       } else{
         fd.append('name',user.name)
         fd.append('email',user.email)
@@ -69,7 +72,8 @@ export class AuthService {
       return this.http.post<User>('/api/auth/register',fd).pipe(catchError(error=>{
         return throwError(error)
       }))
-
-
+  }
+  getData():Observable<Parking[]>{
+    return this.http.get<Parking[]>('/api/auth/getparkingRegister').pipe(catchError(error=>{return throwError(error)}));
   }
 }

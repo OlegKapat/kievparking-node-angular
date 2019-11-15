@@ -13,8 +13,6 @@ import { ApplicantsComponent } from './components/offer/applicants/applicants.co
 import { RentComponent } from './components/offer/rent/rent.component';
 
 
-
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,8 +20,6 @@ import { RentComponent } from './components/offer/rent/rent.component';
     OfferComponent,
     ApplicantsComponent,
     RentComponent
-
-
   ],
   imports: [
     BrowserModule,

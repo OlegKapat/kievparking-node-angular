@@ -1,0 +1,31 @@
+
+option:after{
+  background: olive linear-gradient(olive, olive);
+  color: blue;
+}
+.filter{
+  box-shadow: 12px 12px 2px 1px rgba(0, 0, 255, .2);
+}
+.details{
+min-width: 300px;
+padding: 30px;
+margin-top: -20px;
+}
+.onecard{
+  border:1px solid black;
+  width:250px;
+  border-radius: 20px;
+  display: inline-block;
+  margin: 10px;
+}
+.onecard, button{
+    text-align: center;
+    margin: 15px;
+}
+.card{
+  width: auto;
+  min-height: 400px;
+}
+.card-title{
+  text-align: center;
+}

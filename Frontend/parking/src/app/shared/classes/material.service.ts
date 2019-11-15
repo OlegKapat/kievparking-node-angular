@@ -32,19 +32,24 @@ static initTooltip(ref:ElementRef):MaterialInstance{
     return M.Datepicker.init(ref.nativeElement,{
       format:'dd.mm.yyyy',
       showClearBtn:true,
-      
       onClose:onClose,
       i18n:{
         clear:"скинути",
         cancel:"відміна"
-      }
+      },
+      autoClose:true,
     });
   }
   static initTapTarget(ref: ElementRef): MaterialInstance {
     return M.TapTarget.init(ref.nativeElement)
   }
   static initSelect(ref:ElementRef):MaterialInstance{
-      return M.FormSelect.init(ref.nativeElement)
+      return M.FormSelect.init(ref.nativeElement,{
+        dropdownOptions:{
+          input:'li',
+          dropdown:'Dropdown'
+        }
+      })
   }
   static initDropDown(ref: ElementRef): MaterialInstance {
     return M.Dropdown.init(ref.nativeElement)

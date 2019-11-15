@@ -8,12 +8,10 @@ import { AuthGuard } from './shared/classes/auth.guard';
 import { OfferComponent } from './components/offer/offer.component';
 
 
-
-
 const routes:Routes=[
   {path:'',component:MainPageComponent,pathMatch:'full'},
   {path:'admin', component:AdminComponent, canActivate:[AuthGuard] },
-  {path:'offer',component:OfferComponent,canActivate:[AuthGuard]}
+  {path:'offer',component:OfferComponent,canActivate:[AuthGuard] }
 
 ]
 // loadChildren:()=>import('./components/admin/admin.module').then(m=>m.AdminModule) рядок для прелоудінга

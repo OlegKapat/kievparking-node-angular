@@ -14,15 +14,10 @@ module.exports.addParking= async function(req,res){
           information:req.body.information
         }).save()
         res.status(201).json(parkingdata)
-       
-        
-    }
-    
-    
+          
+    }   
     catch(e){
-        errorHandler(res,e)
-       
-        
+        errorHandler(res,e)     
     }
 }
 

@@ -8,9 +8,10 @@ const applicationSchema=new Schema({
     district:{type:String},
     street:{type:String},
     place:{type:Number},
-    from:{type:String,default:() => moment().format("MM.DD.YYYY")},
-    to:{type:String,default:() => moment().format("MM.DD.YYYY")},
+    from:{type:String},
+    to:{type:String},
     description:{type:String},
-    userId:{ref:'userauths',type:Schema.Types.ObjectId}
+    userId:{ref:'userauths',type:Schema.Types.ObjectId},
+    parkingId:{ref:'parking',type:Schema.Types.ObjectId},
 })
 module.exports=mongoose.model('application',applicationSchema)

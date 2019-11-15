@@ -163,25 +163,42 @@
 
               <div formGroupName='information' class="tempory">
                      <div class="input-field col s12 "     [style.display]="checkOwner ? 'block' :'none'" [ngClass]="{'invalid':registrationForm.get('information.address').invalid && registrationForm.get('information.address').touched}" >
-                      <select formControlName="address"  #select >
-                        <option  [ngValue]="''" disabled selected  >Виберіть адресу</option>
-                        <option  [ngValue]="item" *ngFor="let item of parkingAddress" >{{item}}</option>
+                        <div id="parking-city" class="input-field ">
+                            <select formControlName="city" class="browser-default" #selectcity >
+                              <option  [ngValue]="''" disabled selected  >Виберіть місто</option>
+                              <option  [ngValue]="item" *ngFor="let item of parkingCity" >{{item}}</option>
+                            </select>
+                            <!-- <label>Місто</label> -->
+                            <span class="red-text" *ngIf="registrationForm.get('information.city').invalid && registrationForm.get('information.city').touched">
+                                <span *ngIf="registartionForm.get('information.city').errors['required']">Обов'язкове для заповнення</span>
+                            </span>
+                          </div>
+                          <div id="parking-district" class="input-field ">
+                              <select formControlName="district" class="browser-default" #selectdistrict >
+                                <option  [ngValue]="''" disabled selected  >Виберіть район</option>
+                                <option  [ngValue]="item" *ngFor="let item of parkingDistrict" >{{item}}</option>
+
+                              </select>
+                              <!-- <label>Район</label>  -->
+                              <span class="red-text" *ngIf="registrationForm.get('information.district').invalid && registrationForm.get('information.district').touched">
+                                  <span *ngIf="registartionForm.get('information.district').errors['required']">Обов'язкове для заповнення</span>
+                              </span>
+                            </div>
+                      <div id="parking-address" class="input-field">
+                      <select formControlName="address" class="browser-default" #select (change)="getId($event)">
+                        <option   [ngValue]="''" disabled selected  >Виберіть адресу</option>
+                        <option   [value]="item.street + ' ' + item.building + ',' + item._id"  *ngFor="let item of parkingAddress" >{{item.street + ' ' + item.building}}</option>
 
                       </select>
-                      <label>Адреса паркінга</label>
+                      <!-- <label>Адреса паркінга</label> -->
                       <span class="red-text" *ngIf="registrationForm.get('information.address').invalid && registrationForm.get('information.address').touched">
                           <span *ngIf="registartionForm.get('information.address').errors['required']">Обов'язкове для заповнення</span>
                       </span>
                     </div>
+                    </div>
 
             <ng-template [ngIf]="checkOwner">
-                <div class="upload-btn-wrapper">
-                    <input type="file" name="myfile" class="dn" (change)="onFileUpload($event)" #input formControlName="imageSrc"/>
-                    <button class="btn" type="button" (click)="triggerClick()" >Виберіть файл зображення</button>
-                    <div class="mx-auto">
-                        <img [src]="imagePrevie" class="rounded z-depth-1-half document h200" *ngIf="imagePrevie" >
-                      </div>
-                  </div>
+
 
                     <div class="input-field col s12">
                         <input id="phone" type="text" class="validate input-field col s12" formControlName='phone' [ngClass]="{'invalid':registrationForm.get('information.phone').invalid && registrationForm.get('information.phone').touched}">
@@ -198,10 +215,17 @@
                               <span *ngIf="registrationForm.get('information.place').errors['pattern']">Тільки цифри не більше 2</span>
                           </span>
                         </div>
+                        <div class="upload-btn-wrapper">
+                            <input type="file" name="myfile" class="dn" (change)="onFileUpload($event)" #input formControlName="imageSrc"/>
+                            <button class="btn" type="button" (click)="triggerClick()" >Виберіть файл зображення</button>
+                            <div class="mx-auto">
+                                <img [src]="imagePrevie" class="rounded z-depth-1-half document h200" *ngIf="imagePrevie" >
+                              </div>
+                          </div>
             </ng-template>
           </div>
             <div class="btn-group-reg">
-            <button  type="submit" class="waves-effect waves-light btn-large" >Реєстрація</button>
+            <button [disabled]="registrationForm.invalid" type="submit" class="waves-effect waves-light btn-large" >Реєстрація</button>
             <button  type="button" class="modal-close waves-effect waves-blue waves-light btn-large" (click)="close()">Відміна</button>
           </div>
      </form>

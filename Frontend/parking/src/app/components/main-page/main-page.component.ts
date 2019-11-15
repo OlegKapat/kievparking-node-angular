@@ -1,5 +1,5 @@
 
-import { Component, OnInit,ViewChild,ElementRef,AfterViewInit,OnDestroy, AfterContentInit, ChangeDetectionStrategy, OnChanges} from '@angular/core';
+import { Component, OnInit,ViewChild,ElementRef,AfterViewInit,OnDestroy, AfterContentInit, ChangeDetectionStrategy, OnChanges, Input} from '@angular/core';
 import {FormGroup,FormControl,Validators} from '@angular/forms'
 import {MaterialService,MaterialInstance} from '../../shared/classes/material.service';
 import { AuthService } from './../../shared/services/auth.service';
@@ -23,8 +23,11 @@ export class MainPageComponent implements OnInit,AfterViewInit,OnDestroy,AfterCo
   @ViewChild('modalEnter',{static:false}) modalenterRef:ElementRef;
   @ViewChild('login',{static:false}) loginRef:ElementRef;
   @ViewChild('registration',{static:false}) registrationRef:ElementRef;
-  @ViewChild('input',{static:true}) inputRef:ElementRef;
+  @ViewChild('input',{static:false}) inputRef:ElementRef;
   @ViewChild('select',{static:true}) selectRef:ElementRef;
+  @ViewChild('selectcity',{static:true}) selectcityRef:ElementRef;
+  @ViewChild('selectdistrict',{static:true}) selectdistrictRef:ElementRef;
+  @Input('item._id') setId:string
   info:string
   modal:MaterialInstance;
   modalLogin:MaterialInstance;
@@ -37,7 +40,11 @@ export class MainPageComponent implements OnInit,AfterViewInit,OnDestroy,AfterCo
   aSubLogin:Subscription;
   aSubRegister:Subscription;
   parkingItem:Parking[]=[];
-  parkingAddress:string[]=["Палладіна,18/30","Палладіна,22","Булаховського,4"];
+  parkingAddress:Parking[]=[];
+  selectedId:string
+  selectedAddress:string;
+  parkingCity:string[]=["Київ"]
+  parkingDistrict:string[]=["Деснянский","Святошинський","Дніпровський","Печерський","Голосіївський","Дарницький","Солом'янський","Оболонський","Шевченківський","Подільський"]
   owner:boolean;
   name:string
   somedata:any
@@ -46,6 +53,7 @@ export class MainPageComponent implements OnInit,AfterViewInit,OnDestroy,AfterCo
                private parkingService:ParkingService,private router:Router) { }
 
   ngOnInit() {
+    MaterialService.updateTextInput()
    const elems = document.querySelectorAll('.parallax');
     const instances = M.Parallax.init(elems, this.options);
     this.loginForm=new FormGroup({
@@ -55,7 +63,6 @@ export class MainPageComponent implements OnInit,AfterViewInit,OnDestroy,AfterCo
 
 
     this.activeroute.queryParams.subscribe((params:Params)=> {
-        // tslint:disable-next-line:no-string-literal
         if(params['registered']) {
             // Заходите в систему зі своїми данними
         MaterialService.toast("Раді вас вітати на нашoму сайті")
@@ -77,20 +84,24 @@ export class MainPageComponent implements OnInit,AfterViewInit,OnDestroy,AfterCo
        owner:new FormControl(),
        information:new FormGroup({
        imageSrc:new FormControl(),
-       address:new FormControl('',{validators:Validators.required}),
+       city:new FormControl('',Validators.required),
+       district:new FormControl('',Validators.required),
+       address:new FormControl('',Validators.required),
        phone:new FormControl('',Validators.required),
+       parkingId:new FormControl('11111111'),
        place:new FormControl('',[Validators.required,Validators.pattern(/^(\d){1,2}$/)])
        })
     })
 
   }
   ngAfterViewInit(){
+    MaterialService.updateTextInput();
     this.modal=MaterialService.initModal(this.modalenterRef);
     this.modalLogin=MaterialService.initModal(this.loginRef);
     this.modalRegister=MaterialService.initModal(this.registrationRef);
     MaterialService.initSelect(this.selectRef);
-    MaterialService.updateTextInput();
-
+    MaterialService.initSelect(this.selectcityRef);
+    MaterialService.initSelect(this.selectdistrictRef);
   }
 
    firstEnter(){
@@ -118,7 +129,8 @@ export class MainPageComponent implements OnInit,AfterViewInit,OnDestroy,AfterCo
     this.inputRef.nativeElement.click();
    }
   close(){
-    this.auth.logOut()
+    //this.auth.logOut()
+    this.modalRegister.close();
     this.router.routeReuseStrategy.shouldReuseRoute = function(){
       return false; // перегрузка основної сторінки
       };
@@ -137,7 +149,7 @@ export class MainPageComponent implements OnInit,AfterViewInit,OnDestroy,AfterCo
 
       }
 
-    },error=>MaterialService.toast("Невірний логін чи пароль"))
+    },error=>MaterialService.toast("Невірний логін чи пароль"+ error))
 
     this.modalLogin.close()
     this.loginForm.reset();
@@ -151,23 +163,33 @@ export class MainPageComponent implements OnInit,AfterViewInit,OnDestroy,AfterCo
       }
   }
   onSubmitRegister(){
-    this. aSubRegister=this.auth.registration(this.registrationForm.value, this.image)
-    .subscribe(()=>{ this.router.navigate(['/'],{queryParams:{
-      registered:true
-    }}),MaterialService.toast("Користувач створений")}
-    ),error=>{MaterialService.toast(`Проблеми з реєстрацією  ${error.error.message}`)}
+    this. aSubRegister=this.auth.registration(this.registrationForm.value,this.selectedAddress, this.selectedId,this.image)
+    .subscribe(()=>{
+     this.router.navigate(['/'],{queryParams:{
+      registered:true,
 
+    }}),MaterialService.toast("Користувач створений")
+    }
+    ),error=>MaterialService.toast(`Проблеми з реєстрацією  ${error.error.message}`),
+    this.registrationForm.reset()
     this.modalRegister.close();
 
 
   }
 onChanges(){
   this.registrationForm.get('owner').valueChanges.pipe(tap(()=>{this.checkOwner=!this.checkOwner}),switchMap(()=> {
-   return this.parkingService.getData() })).subscribe((data)=>{this.parkingItem=data}),error=>MaterialService.toast(error.message)
+   return this.auth.getData() })).subscribe((data)=>{this.parkingAddress=data}),error=>MaterialService.toast(error.message)
+
 }
 ngAfterContentInit(){
   this.onChanges();
 
 }
+ getId(event){
+     let select=event.target.value;
+     let onevalue=select.split(",")
+     this.selectedAddress=onevalue[0];
+     this.selectedId=onevalue[1];
 
+ }
 }

@@ -1,6 +1,7 @@
 const bcrypt=require('bcryptjs');
 const jwt=require('jsonwebtoken');
 const User=require('../../models/user/Auth');
+const parking=require('../../models/manager/parking')
 const errorHandler=require('../../utilites/errorHadler');
 const secretkey=require('../../config/keys');
 
@@ -50,31 +51,28 @@ module.exports.register= async function(req,res){
     }
     else{
         const ownerfield=req.body.owner;   
-        const body=req.body;
-       
+        const parkingId= await parking.findOne({street:req.body.findstreet, building:req.body.findbuilding}).select("_id")
         if(ownerfield){
             const user=new User({
                 name:req.body.name,
                 owner:req.body.owner,
                 information:{
                 imageSrc:req.file ? req.file.path :'',
+                city:req.body.city,
+                district:req.body.district,
                 parkingaddress:req.body.address,
                 contactphone: req.body.phone,
-                place:req.body.place
+                place:req.body.place,
+                parkingId:req.body.parkingId
                 },
                 email:req.body.email,
                 password:bcrypt.hashSync(password,salt)
-            })
-               
-               
+            })  
             try{
                 await user.save();
                 res.status(201).json({
                     message:"Власник паркомісця зареєстрований",
-                })
-                
-               
-                
+                })         
             }
             catch(e){
                  errorHandler(res,e)      
