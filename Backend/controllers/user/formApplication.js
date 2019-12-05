@@ -1,8 +1,7 @@
 const errorHandler=require('../../utilites/errorHadler');
 const Application=require('../../models/user/FormApplication');
-const userAuth=require('../../models/user/Auth');
-
-
+const Auth=require('../../models/user/Auth');
+const Parking=require('../../models/manager/parking')
 const moment=require('moment');
 
 
@@ -26,8 +25,7 @@ module.exports.addApplication= async function(req,res){
              
             }).save()
             res.status(201).json(applicationForm)
-                   console.log(getparking);
-                   
+                          
         }
         else{
             res.status(401).json({
@@ -53,7 +51,18 @@ module.exports.getstreet= async function(req,res){
 module.exports.getparking= async function(req,res){
     try{   
      const oneparking=await Application.find({street:req.params.id})
-     res.status(200).json(oneparking)
+     const findUser=await Auth.findOne({information:{parkingaddress:req.params.id}})
+     res.status(200).json({oneparking,findUser})
+     
+     
+    }
+    catch(e){
+        errorHandler(res,e)
+    }
+}
+module.exports.getcommoninfo= async function(req,res){
+    try{
+     const tottalinfo=await Auth.findOne({})
     }
     catch(e){
         errorHandler(res,e)

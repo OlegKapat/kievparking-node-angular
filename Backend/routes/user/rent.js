@@ -1,0 +1,8 @@
+const express=require('express');
+const router=express.Router();
+const rentcontroller=require('../../controllers/user/rent')
+const passport=require('passport');
+
+router.post('/addrent',passport.authenticate('jwt',{session:false}),rentcontroller.addrentparking)
+
+module.exports=router

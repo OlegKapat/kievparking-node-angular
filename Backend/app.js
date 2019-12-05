@@ -8,6 +8,7 @@ const userAuth=require('./routes/user/auth');
 const managerAuth=require('./routes/manager/managerauth');
 const parkingRoutes=require('./routes/manager/parking');
 const applicationRoutes=require('./routes/user/application');
+const rentRouter=require('./routes/user/rent')
 const config=require('./config/keys')
 
 mongoose.connect(config.mongoURI,{useNewUrlParser: true}).then(()=>console.log("MongoDB подключена")).catch(error=>console.log(error));
@@ -26,6 +27,7 @@ app.use(bodyParser.json());
 app.use('/api/auth',userAuth);
 app.use('/api/managerauth',managerAuth);
 app.use('/api/admin',parkingRoutes);
-app.use('/api/applicant',applicationRoutes)
+app.use('/api/applicant',applicationRoutes);
+app.use('/api/rent',rentRouter);
 
 module.exports=app;

@@ -17,6 +17,7 @@ margin-top: -20px;
   border-radius: 20px;
   display: inline-block;
   margin: 10px;
+  background-color: rgb(197, 189, 189);
 }
 .onecard, button{
     text-align: center;
@@ -29,3 +30,11 @@ margin-top: -20px;
 .card-title{
   text-align: center;
 }
+ #map {
+    height: 300px;
+    width: 100%;
+   }
+.rentform{
+  height: 500px;
+}
+

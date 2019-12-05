@@ -29,3 +29,9 @@ export interface Filter{
   end?:Date,
 
 }
+export interface Rent{
+  termstatus?:boolean,
+  confirmstatus?:boolean,
+  start:Date,
+  end:Date
+}

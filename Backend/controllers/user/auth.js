@@ -51,7 +51,7 @@ module.exports.register= async function(req,res){
     }
     else{
         const ownerfield=req.body.owner;   
-        const parkingId= await parking.findOne({street:req.body.findstreet, building:req.body.findbuilding}).select("_id")
+        //const parkingId= await parking.findOne({street:req.body.findstreet, building:req.body.findbuilding}).select("_id")
         if(ownerfield){
             const user=new User({
                 name:req.body.name,

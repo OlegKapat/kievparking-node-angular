@@ -30,7 +30,7 @@ export class InfoService {
     headers.append("accept","application/json")
     return this.http.post<Application[]>(`/api/applicant/getstreet`,item,{headers})
   }
-  selectoneparking(street):Observable<any>{
-    return this.http.get<any>(`api/applicant/getone/${street}`)
+  selectoneparking(street:string):Observable<any>{
+    return this.http.get<any>(`api/applicant/getone/${street}`);
   }
 }

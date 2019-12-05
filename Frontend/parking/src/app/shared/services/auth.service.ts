@@ -48,7 +48,7 @@ export class AuthService {
     localStorage.clear()
   }
   registration(user:User,selectedAddress:string,selectedId:string,image?:File):Observable<User> {
-     
+
       const fd:any=new FormData();
       if(user.owner){
         fd.append('email',user.email)
