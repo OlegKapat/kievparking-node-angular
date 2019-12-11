@@ -13,4 +13,7 @@ export class RentService {
   addRent(rentForm:Rent):Observable<any>{
     return this.http.post<Rent>('/api/rent/addrent',rentForm)
   }
+  getRentId(id):Observable<Rent[]>{
+    return this.http.get<Rent[]>(`/api/rent/getrent/${id}`)
+  }
 }

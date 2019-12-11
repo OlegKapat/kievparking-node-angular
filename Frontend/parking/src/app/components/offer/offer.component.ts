@@ -30,7 +30,9 @@ export class OfferComponent implements OnInit,AfterViewInit,OnDestroy{
   submitForm(data){
    this.aSub=this.applicatioService.addApplication(data).subscribe(()=>{
      MaterialService.toast("Заявку подано")
-   }, error=>MaterialService.toast(error.error.message)
+
+   }, error=>{MaterialService.toast(error.error.message),console.log(error.error.message)}
+
    )
   }
   ngOnDestroy(){

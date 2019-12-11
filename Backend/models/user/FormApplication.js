@@ -1,4 +1,5 @@
 const mongoose=require('mongoose');
+const moment=require('moment')
 const Schema=mongoose.Schema;
 
 
@@ -8,8 +9,8 @@ const applicationSchema=new Schema({
     district:{type:String},
     street:{type:String},
     place:{type:Number},
-    from:{type:String},
-    to:{type:String},
+    from:{type:Date, default:()=>moment().format('DD.MM.YYYY')},
+    to:{type:Date,default:()=>moment().format('DD.MM.YYYY')},
     description:{type:String},
     userId:{ref:'userauths',type:Schema.Types.ObjectId},
     parkingId:{ref:'parking',type:Schema.Types.ObjectId},

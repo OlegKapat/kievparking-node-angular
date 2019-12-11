@@ -19,7 +19,7 @@ margin-top: -20px;
   margin: 10px;
   background-color: rgb(197, 189, 189);
 }
-.onecard, button{
+.onecard, button, h5{
     text-align: center;
     margin: 15px;
 }
@@ -37,4 +37,6 @@ margin-top: -20px;
 .rentform{
   height: 500px;
 }
-
+.alarm{
+  color:red
+}

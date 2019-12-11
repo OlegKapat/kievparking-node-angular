@@ -33,5 +33,6 @@ export interface Rent{
   termstatus?:boolean,
   confirmstatus?:boolean,
   start:Date,
-  end:Date
+  end:Date,
+  parkingForRentId:string
 }

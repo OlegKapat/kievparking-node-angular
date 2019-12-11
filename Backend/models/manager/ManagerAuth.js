@@ -5,7 +5,7 @@ const moment=require('moment');
 const managerSchema=new Schema({
     name:{type:String,required:true},
     password:{type:String,required:true},
-    date:{ type:Date,default:() => moment().format("MM.DD.YYYY")}
+    date:{ type:Date,default:() => moment().format("DD.MM.YYYY")}
 })
 
 module.exports=mongoose.model('managerauths',managerSchema);

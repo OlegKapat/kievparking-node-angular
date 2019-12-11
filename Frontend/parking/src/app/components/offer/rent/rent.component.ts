@@ -1,13 +1,17 @@
+import { switchMap } from 'rxjs/operators';
 
-import { Application, Rent } from './../../../shared/interfaces/interfaces';
+
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
+import { combineLatest, Observable,fromEvent, of } from 'rxjs';
+import { Router } from '@angular/router';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
 import {InfoService} from '../../../shared/services/info.service'
 import {MaterialService,MaterialInstance, MaterialDatepicker} from '../../../shared/classes/material.service'
-import { combineLatest } from 'rxjs';
-import { Router } from '@angular/router';
- import { } from 'googlemaps';
+import { Rent, Application } from './../../../shared/interfaces/interfaces';
+import { } from 'googlemaps';
 import { RentService } from 'src/app/shared/services/rent.service';
+import * as moment from 'moment'
+import { ApplocationService } from 'src/app/shared/services/applocation.service';
 
 @Component({
   selector: 'app-rent',
@@ -29,7 +33,7 @@ export class RentComponent implements OnInit,AfterViewInit{
   city:string[];
   district:string[];
   street:string;
-  parkingItem:any[];
+  parkingItem:Application[];
   newdata:any[]=[];
   tempalateParam:string;
   userId:string
@@ -39,14 +43,20 @@ export class RentComponent implements OnInit,AfterViewInit{
   start:MaterialDatepicker;
   end:MaterialDatepicker;
   isValid:boolean;
+  isDateValidFrom;isDateValidTo:boolean;
   formForSend:Rent={
     termstatus:false,
     confirmstatus:false,
     start:null,
-    end:null
+    end:null,
+    parkingForRentId:''
   }
+  parkingForRentId:string
+  parkingLength:number;
+  getAllUnconfirmedParkings:Rent[];
 
-  constructor( private infoservice:InfoService, private router:Router, private rentservice:RentService) {}
+  constructor( private infoservice:InfoService, private router:Router,
+              private rentservice:RentService, private applicationservice:ApplocationService) {}
 
   ngOnInit() {
     this.geocoder=new google.maps.Geocoder()
@@ -70,6 +80,26 @@ export class RentComponent implements OnInit,AfterViewInit{
     this.rentpage=MaterialService.initModal(this.rentRef)
     this.start= MaterialService.initDatepicker(this.from ,this.validate.bind(this))
     this.end= MaterialService.initDatepicker(this.to,this.validate.bind(this))
+    fromEvent(this.from.nativeElement,'change').pipe(switchMap(()=>{return this.applicationservice.getApplicationById(this.parkingForRentId)})).subscribe((e)=>{
+      if(moment(e.from).format('DD.MM.YYYY')<=this.from.nativeElement.value )
+       {
+         this.isDateValidFrom=false
+       }
+       else{
+           this.isDateValidFrom=true
+       }
+     }
+     )
+     fromEvent(this.to.nativeElement,'change').pipe(switchMap(()=>{return this.applicationservice.getApplicationById(this.parkingForRentId)})).subscribe((s)=>{
+      if(moment(s.to).format('DD.MM.YYYY')>=this.to.nativeElement.value )
+       {
+         this.isDateValidTo=false
+       }
+       else{
+           this.isDateValidTo=true
+       }
+     }
+     )
 
   }
   findAddress(event){
@@ -85,7 +115,8 @@ export class RentComponent implements OnInit,AfterViewInit{
     this. tempalateParam=event.target.value
 
     if(this.tempalateParam){
-      this.infoservice.selectoneparking(this.tempalateParam).subscribe((data)=>{this.parkingItem=data.oneparking}),
+      this.infoservice.selectoneparking(this.tempalateParam).subscribe((data)=>{this.parkingItem=data.oneparking,this.parkingLength=this.parkingItem.length
+      }),
       error=>console.error(error.error.message);
 
     }
@@ -119,8 +150,12 @@ export class RentComponent implements OnInit,AfterViewInit{
        })
      }
   }
-  openrentmodal(){
+  openrentmodal(id){
+    this.parkingForRentId=id;
     this.rentpage.open()
+    this.rentservice.getRentId(this.parkingForRentId).subscribe((data)=>{this.getAllUnconfirmedParkings=data},
+    error=>MaterialService.toast("Неможливо вибрати"+ error.error.message)
+    )
   }
   validate(){
     if(this.start.date|| this.end.date){
@@ -136,14 +171,21 @@ export class RentComponent implements OnInit,AfterViewInit{
     }
   onSubmit(){
     this.rentservice.addRent(this.formForSend={
+      termstatus:false,
+      confirmstatus:false,
       start:this.start.date,
-      end:this.end.date
-    }).subscribe(()=>{MaterialService.toast("Запит прийнятий в обробку"),console.log(this.formForSend);
-    })
+      end:this.end.date,
+      parkingForRentId:this.parkingForRentId
+    }).subscribe(()=>{MaterialService.toast("Запит прийнятий в обробку")
+
+
+    },error=>MaterialService.toast("Помилка запиту " + error.error.message)),
+    this.rentpage.close()
   }
   closeform(){
     this.rentpage.close();
   }
+
 }
 
 
