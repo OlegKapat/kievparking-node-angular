@@ -10,7 +10,7 @@ import { MaterialService, MaterialDatepicker} from '../../../shared/classes/mate
   styleUrls: ['./applicants.component.css']
 })
 export class ApplicantsComponent implements OnInit,AfterViewInit,OnDestroy {
-  @ViewChild('picker1',{static:false}) from:ElementRef;
+  @ViewChild('picker1',{static:true}) from:ElementRef;
   @ViewChild('picker2',{static:true}) to:ElementRef;
   @Output() childSubmit=new EventEmitter()
   start:MaterialDatepicker;

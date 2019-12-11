@@ -1,11 +1,11 @@
 <section>
   <form [formGroup]="applicantForm" (ngSubmit)="onSubmit()" class="col s12">
               <div class="input-field col s6" >
-                <input  type="text"  formControlName='one'  #picker1 >
+                <input  type="text"  formControlName='one' #picker1 >
                 <label>Початок</label>
               </div>
               <div class="input-field col s6" >
-                <input type="text" formControlName='two'    #picker2  >
+                <input type="text" formControlName='two' #picker2  >
                 <label>Кінець</label>
                 </div>
                 <div class="input-field col s12">
@@ -13,8 +13,8 @@
                   <label for="description">Примітка</label>
                 </div>
                 <div class="buttonrow">
-                <button type="submit" class="waves-effect waves-light btn-large pulse"[disabled]="owner || !isValid">Здати в оренду</button>&nbsp;
-                <button type="submit" class="waves-effect waves-light btn-large pulse" [disabled]="!owner">Зняти в аренду</button>
+                <button type="submit" class="waves-effect waves-light btn-large"[disabled]="owner || !isValid">Здати в оренду</button>&nbsp;
+                <!-- <button type="submit" class="waves-effect waves-light btn-large " [disabled]="!owner">Зняти в аренду</button> -->
                 </div>
   </form>
 </section>

@@ -149,7 +149,7 @@ export class MainPageComponent implements OnInit,AfterViewInit,OnDestroy,AfterCo
 
       }
 
-    },error=>MaterialService.toast("Невірний логін чи пароль"+ error))
+    },error=>MaterialService.toast("Невірний логін чи пароль"))
 
     this.modalLogin.close()
     this.loginForm.reset();
@@ -173,8 +173,6 @@ export class MainPageComponent implements OnInit,AfterViewInit,OnDestroy,AfterCo
     ),error=>MaterialService.toast(`Проблеми з реєстрацією  ${error.error.message}`),
     this.registrationForm.reset()
     this.modalRegister.close();
-
-
   }
 onChanges(){
   this.registrationForm.get('owner').valueChanges.pipe(tap(()=>{this.checkOwner=!this.checkOwner}),switchMap(()=> {

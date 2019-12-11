@@ -26,32 +26,71 @@
                 </div>
     </div>
 
-    <div class="col s8 details" *ngIf="tempalateParam">
+    <div class="col s8 details">
         <div class="card" >
             <div  class="row">
               <div class="card">
-                <div class="card-image waves-effect waves-block waves-light">
+                <!-- <div class="card-image waves-effect waves-block waves-light">
                   <img class="activator" src="images/office.jpg">
-                </div>
+                </div> -->
                 <div class="card-content">
                   <span class="card-title activator grey-text text-darken-4">Інформація про паркінг по вул.{{tempalateParam}}<i class="material-icons right">more_vert</i></span>
-                  <p><a href="#">This is a link</a></p>
+                  <span class="card-title activator grey-text text-darken-4">Кількість місць: {{parkingLength}} </span>
+                  <div #mapRef id="map"></div>
                 </div>
+
                 <div class="card-reveal">
                   <span class="card-title grey-text text-darken-4">Пропозиції власників<i class="material-icons right">close</i></span>
-                  <div *ngFor="let i of parkingItem; let ind=index" class="onecard">
+                  <div *ngFor="let i of parkingItem" class="onecard">
                   <ul >
                     <li>Власник: {{i.name}}</li>
                     <li>Місце: {{i.place}}</li>
-                    <li>Вільне з <a>{{i.from}}</a>  по  <a>{{i.to}}</a></li>
+                    <li>Вільне з <a>{{i.from | date: "dd.MM.yyyy"}}</a>  по  <a>{{i.to | date:"dd.MM.yyyy"}}</a></li>
                     <li>Додатково: {{i.description}}</li>
+
+
                   </ul>
-                  <button type="button" class="waves-effect waves-light btn-small">Бронювати</button>
+                  <button type="button" (click)="openrentmodal(i._id)" class="waves-effect waves-light btn-small">Бронювати</button>
                 </div>
                 </div>
               </div>
               </div>
         </div>
+    </div>
+    <div id="modal1" class="modal" #rent>
+      <h5>Паркомісце {{confirmation ? 'частково зайняте':'вільне'}} </h5>
+        <div class="rentform">
+        <form [formGroup]="rentForm" (ngSubmit)="onSubmit()" class="col s12">
+                    <div class="input-field col s6" >
+                      <input  type="text"  formControlName='from'  #picker3 >
+                      <label>Початок</label>
+                      <span  *ngIf="isDateValidFrom" class="red-text">Вибрана та запропонована дата не співпадають</span>
+                    </div>
+
+
+                    <div class="input-field col s6" >
+                      <input type="text" formControlName='to'    #picker4  >
+                      <label>Кінець</label>
+                      <span  *ngIf="isDateValidTo" class="red-text">Вибрана та запропонована дата не співпадають</span>
+                      </div>
+                      <div class="buttonrow">
+                      <button type="submit" class="waves-effect waves-light btn-large"[disabled]=" !isValid || isDateValidFrom || isDateValidTo">Бронювати</button>&nbsp;
+                      <button type="button" class="waves-effect waves-light btn-large " (click)="closeform()">Відміна</button>
+                      </div>
+        </form>
+        <div class="col s12">
+            <b><span>Заброньовані дати</span></b>
+           <ul>
+             <li *ngFor=" let i of getAllUnconfirmedParkings">З {{i.from | date:'dd.MM.yyyy'}} по {{i.to | date:'dd.MM.yyyy'}}
+                <label class="input-field col s12">
+                    <input type="checkbox"  [checked]='!i.confirmstatus'  formControlName="confirmstatus"/>
+                    <span>Підтвердження</span>
+                     </label>
+             </li>
+           </ul>
+         </div>
+      </div>
+
     </div>
   </div>
   </div>

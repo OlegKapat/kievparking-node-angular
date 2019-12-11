@@ -37,7 +37,8 @@ static initTooltip(ref:ElementRef):MaterialInstance{
         clear:"скинути",
         cancel:"відміна"
       },
-      autoClose:true,
+      autoClose:true
+
     });
   }
   static initTapTarget(ref: ElementRef): MaterialInstance {
