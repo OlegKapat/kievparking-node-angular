@@ -62,8 +62,6 @@ module.exports.getApplicationById= async function(req,res){
     try{
      const getAllById=await Application.findById({_id:req.params.id})
      res.status(201).json(getAllById)
-     console.log(req.params.id);
-     
     }
     catch(e){
         errorHandler(res,e)

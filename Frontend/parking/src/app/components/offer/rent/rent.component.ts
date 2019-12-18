@@ -153,7 +153,9 @@ export class RentComponent implements OnInit,AfterViewInit{
   openrentmodal(id){
     this.parkingForRentId=id;
     this.rentpage.open()
-    this.rentservice.getRentId(this.parkingForRentId).subscribe((data)=>{this.getAllUnconfirmedParkings=data},
+    this.rentservice.getAllStatus(this.parkingForRentId).subscribe((data)=>{this.getAllUnconfirmedParkings=data,console.log(this.getAllUnconfirmedParkings);
+
+    },
     error=>MaterialService.toast("Неможливо вибрати"+ error.error.message)
     )
   }

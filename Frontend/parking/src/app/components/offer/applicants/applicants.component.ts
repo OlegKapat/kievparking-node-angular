@@ -2,6 +2,8 @@
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, OnDestroy, EventEmitter, Output, OnChanges } from '@angular/core';
 import { MaterialService, MaterialDatepicker} from '../../../shared/classes/material.service'
+import { RentService } from '../../../shared/services/rent.service';
+import { Rent } from 'src/app/shared/interfaces/interfaces';
 
 
 @Component({
@@ -17,9 +19,10 @@ export class ApplicantsComponent implements OnInit,AfterViewInit,OnDestroy {
   end:MaterialDatepicker;
   applicantForm:FormGroup;
   isValid=true;
+  dataRent:Rent[]=[];
   form={}
 
-  costructor() { }
+  constructor(private rentservice:RentService){}
 
   ngOnInit() {
    this.applicantForm=new FormGroup({
@@ -27,6 +30,7 @@ export class ApplicantsComponent implements OnInit,AfterViewInit,OnDestroy {
      two:new FormControl('',Validators.required),
      description:new FormControl('')
    })
+     this.rentservice.getRentId().subscribe((data)=>this.dataRent=data)
   }
   ngAfterViewInit(){
     MaterialService.updateTextInput()
@@ -57,7 +61,11 @@ export class ApplicantsComponent implements OnInit,AfterViewInit,OnDestroy {
       this.start.destroy()
       this.end.destroy();
     }
-
+   confirm(id){
+     this.rentservice.changeStatus(id).subscribe(()=>MaterialService.toast("Бронювання підтвержено"),
+     error=>MaterialService.toast(error)
+     )
+   }
 
 }
 

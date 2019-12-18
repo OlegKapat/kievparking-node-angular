@@ -32,12 +32,37 @@ module.exports.addrentparking = async function(req,res){
 }
 
 module.exports.getRentById = async function(req,res){
-   const parkingId=await Application.findById({_id:req.params.id});
+   const parkingId=await Application.findOne({userId:req.user.id});
    try{
-         getrent= await Rent.find({parkingForRentId:parkingId}).where({confirmstatus:false})
-         res.status(201).json(getrent)     
+         getrent= await Rent.find({parkingForRentId:parkingId})
+         res.status(201).json(getrent) 
+              
    }
    catch(e){
    errorHandler(res,e)
+   }
+}
+module.exports.confirmstatus=async function(req,res){
+   try{
+         const status=await Rent.findOneAndUpdate(
+            {_id:req.params.id},
+            {$set:{confirmstatus:req.body.status}},
+            {new:true}
+            )
+            res.status(200).json(status);
+
+   }
+   catch(e){
+      errorHandler(res,e)
+   }
+}
+module.exports.getAllResservedParkings=async function(req,res){
+   try{
+      const applicationId=await Application.findById({_id:req.params.id})
+        const allreserved=await Rent.find({parkingForRentId:applicationId})
+        res.status(201).json(allreserved)   
+   }
+   catch(e){
+      errorHandler(res,e)
    }
 }
