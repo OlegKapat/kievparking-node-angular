@@ -7,5 +7,6 @@ router.post('/addrent',passport.authenticate('jwt',{session:false}),rentcontroll
 router.get('/getrent', passport.authenticate('jwt',{session:false}), rentcontroller.getRentById)
 router.patch('/changestatus/:id',passport.authenticate('jwt',{session:false}), rentcontroller.confirmstatus)
 router.get('/getcurrentstatus/:id',passport.authenticate('jwt',{session:false}),rentcontroller.getAllResservedParkings)
+router.get('/sendreservationmail/:id',rentcontroller.getMailReservation)
 
 module.exports=router

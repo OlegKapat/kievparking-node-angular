@@ -1,9 +1,11 @@
 
+import { combineLatest } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, OnDestroy, EventEmitter, Output, OnChanges } from '@angular/core';
 import { MaterialService, MaterialDatepicker} from '../../../shared/classes/material.service'
 import { RentService } from '../../../shared/services/rent.service';
 import { Rent } from 'src/app/shared/interfaces/interfaces';
+import { ApplocationService } from 'src/app/shared/services/applocation.service';
 
 
 @Component({
@@ -22,7 +24,7 @@ export class ApplicantsComponent implements OnInit,AfterViewInit,OnDestroy {
   dataRent:Rent[]=[];
   form={}
 
-  constructor(private rentservice:RentService){}
+  constructor(private rentservice:RentService, private applicantservice:ApplocationService){}
 
   ngOnInit() {
    this.applicantForm=new FormGroup({
@@ -62,10 +64,15 @@ export class ApplicantsComponent implements OnInit,AfterViewInit,OnDestroy {
       this.end.destroy();
     }
    confirm(id){
-     this.rentservice.changeStatus(id).subscribe(()=>MaterialService.toast("Бронювання підтвержено"),
-     error=>MaterialService.toast(error)
-     )
+    combineLatest(this.rentservice.changeStatus(id,true),this.applicantservice.sendConfirmationEmail(id)).
+         subscribe((data:[any,any])=>MaterialService.toast("Бронювання підтвержено"),error=>MaterialService.toast(error.error.message)
+         )
    }
+   reject(id){
+    this.rentservice.changeStatus(id,false).subscribe(()=>MaterialService.toast("Бронювання відхилено"),
+    error=>MaterialService.toast(error)
+    )}
+
 
 }
 

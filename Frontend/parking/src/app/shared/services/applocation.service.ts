@@ -16,4 +16,7 @@ export class ApplocationService {
   getApplicationById(id):Observable<Application>{
     return this.http.get<Application>(`/api/applicant/getapplication/${id}`)
   }
+  sendConfirmationEmail(id):Observable<any>{
+    return this.http.get(`api/applicant/sendconfirmatiomail/${id}`)
+  }
 }

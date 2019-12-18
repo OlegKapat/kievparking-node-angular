@@ -57,43 +57,44 @@
               </div>
         </div>
     </div>
-    <div id="modal1" class="modal col s12" #rent>
-      <h5>Паркомісце {{confirmation ? 'частково зайняте':'вільне'}} </h5>
-        <div class="rentform">
-        <form [formGroup]="rentForm" (ngSubmit)="onSubmit()" class="col s12">
-                    <div class="input-field col s6" >
-                      <input  type="text"  formControlName='from'  #picker3 >
-                      <label>Початок</label>
-                      <span  *ngIf="isDateValidFrom" class="red-text">Вибрана та запропонована дата не співпадають</span>
-                    </div>
-
-
-                    <div class="input-field col s6" >
-                      <input type="text" formControlName='to'    #picker4  >
-                      <label>Кінець</label>
-                      <span  *ngIf="isDateValidTo" class="red-text">Вибрана та запропонована дата не співпадають</span>
-                      </div>
-                      <div class="buttonrow">
-                      <button type="submit" class="waves-effect waves-light btn-large"[disabled]=" !isValid || isDateValidFrom || isDateValidTo">Бронювати</button>&nbsp;
-                      <button type="button" class="waves-effect waves-light btn-large " (click)="closeform()">Відміна</button>
-                      </div>
-        </form>
-
-        <div class="col s12">
-            <b><span>Заброньовані дати</span></b>
-           <ul>
-             <li *ngFor=" let i of getAllUnconfirmedParkings">З {{i.from | date:'dd.MM.yyyy'}} по {{i.to | date:'dd.MM.yyyy'}}
-                <label class="input-field col s12">
-                    <input type="checkbox"  [checked]='i.confirmstatus'/>
-                    <span>Підтвердження</span>
-                     </label>
-             </li>
-           </ul>
-         </div>
-      </div>
-
-    </div>
   </div>
   </div>
+   <div class="container">
+     <div class="row">
+        <div class="modal col s7" #rent>
+            <h5>Паркомісце {{confirmation ? 'частково зайняте':'вільне'}} </h5>
+              <div class="rentform">
+              <form [formGroup]="rentForm" (ngSubmit)="onSubmit()" class="col s12">
+                          <div class="input-field col s6" >
+                            <input  type="text"  formControlName='from'  #picker3 >
+                            <label>Початок</label>
+                            <span  *ngIf="isDateValidFrom" class="red-text">Вибрана та запропонована дата не співпадають</span>
+                          </div>
 
+
+                          <div class="input-field col s6" >
+                            <input type="text" formControlName='to'    #picker4  >
+                            <label>Кінець</label>
+                            <span  *ngIf="isDateValidTo" class="red-text">Вибрана та запропонована дата не співпадають</span>
+                            </div>
+                            <div class="buttonrow col s12">
+                            <button type="submit" class="waves-effect waves-light btn-large"[disabled]=" !isValid || isDateValidFrom || isDateValidTo">Бронювати</button>&nbsp;
+                            <button type="button" class="waves-effect waves-light btn-large " (click)="closeform()">Відміна</button>
+                            </div>
+              </form>
+              <div class="col s12">
+                  <b><span>Заброньовані дати</span></b>
+                 <ul>
+                   <li *ngFor=" let i of getAllUnconfirmedParkings">З {{i.from | date:'dd.MM.yyyy'}} по {{i.to | date:'dd.MM.yyyy'}}
+                      <label class="input-field col s12">
+                          <input type="checkbox"  [checked]='i.confirmstatus'/>
+                          <span>Підтвердження</span>
+                           </label>
+                   </li>
+                 </ul>
+               </div>
+            </div>
+          </div>
+     </div>
+   </div>
 </section>

@@ -8,5 +8,6 @@ router.post('/addapplication',passport.authenticate('jwt',{session:false}), cont
 router.post('/getstreet/',passport.authenticate('jwt',{session:false}),controller.getstreet);
 router.get('/getone/:id',passport.authenticate('jwt',{session:false}), controller.getparking);
 router.get('/getapplication/:id',passport.authenticate('jwt',{session:false}),controller.getApplicationById)
+router.get('/sendconfirmatiomail/:id',controller.sendMailConfirm)
 
 module.exports=router;

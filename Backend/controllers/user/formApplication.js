@@ -1,8 +1,10 @@
 const errorHandler=require('../../utilites/errorHadler');
 const Application=require('../../models/user/FormApplication');
 const Auth=require('../../models/user/Auth');
-const Parking=require('../../models/manager/parking')
+const Rent=require('../../models/user/Rent')
 const moment=require('moment');
+var nodemailer = require('nodemailer');
+const api=require('../../config/keys')
 
 
 module.exports.addApplication= async function(req,res){
@@ -62,6 +64,41 @@ module.exports.getApplicationById= async function(req,res){
     try{
      const getAllById=await Application.findById({_id:req.params.id})
      res.status(201).json(getAllById)
+    }
+    catch(e){
+        errorHandler(res,e)
+    }
+}
+module.exports.sendMailConfirm=async function(req,res){
+        const getRentId=await Rent.findById({_id:req.params.id}).select('userId')
+        const getMail=await Auth.findById({_id:getRentId.userId}).select('email')  
+    try{
+        var transporter = nodemailer.createTransport({
+            host: 'smtp.ukr.net',
+            port:465,
+            secure:true,
+            auth: {
+              user: api.email,
+              pass: api.password
+            }
+          });
+          
+          var mail = {
+            from: 'serviceparking@ukr.net',
+            to: getMail.email,
+            subject: 'Підтверження бронювання паркомісця',
+            //text: 'Hi, mail sent.',
+            html:'<b>Ваше бронювання в паркінгу підтвержено.</b> <br> <span>Дякуємо що скористались сервісом бронювання паркомісць.<br></span> <site>www.parking.kiev.ua<site>/'
+          };
+          
+          transporter.sendMail(mail, (error, info)=>{
+            if (error) {
+              console.log(error + " Лист не відправлено");
+            } else {
+              console.log('Лист відправлено: ' + info.response);
+            }
+          });
+
     }
     catch(e){
         errorHandler(res,e)

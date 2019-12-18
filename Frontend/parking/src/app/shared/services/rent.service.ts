@@ -16,10 +16,13 @@ export class RentService {
   getRentId():Observable<Rent[]>{
     return this.http.get<Rent[]>(`/api/rent/getrent/`)
   }
-  changeStatus(id):Observable<Rent>{
-    return this.http.patch<Rent>(`/api/rent/changestatus/${id}`,{status:true})
+  changeStatus(id,status):Observable<Rent>{
+    return this.http.patch<Rent>(`/api/rent/changestatus/${id}`,{status:status})
   }
   getAllStatus(id):Observable<Rent[]>{
     return this.http.get<Rent[]>(`api/rent/getcurrentstatus/${id}`)
+  }
+  sendMailReservation(id):Observable<any>{
+    return this.http.get<any>(`api/rent/sendreservationmail/${id}`)
   }
 }

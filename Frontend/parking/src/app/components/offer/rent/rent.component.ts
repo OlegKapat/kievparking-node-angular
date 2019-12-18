@@ -1,10 +1,9 @@
+
 import { switchMap } from 'rxjs/operators';
-
-
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { combineLatest, Observable,fromEvent, of } from 'rxjs';
 import { Router } from '@angular/router';
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import {InfoService} from '../../../shared/services/info.service'
 import {MaterialService,MaterialInstance, MaterialDatepicker} from '../../../shared/classes/material.service'
 import { Rent, Application } from './../../../shared/interfaces/interfaces';
@@ -153,8 +152,7 @@ export class RentComponent implements OnInit,AfterViewInit{
   openrentmodal(id){
     this.parkingForRentId=id;
     this.rentpage.open()
-    this.rentservice.getAllStatus(this.parkingForRentId).subscribe((data)=>{this.getAllUnconfirmedParkings=data,console.log(this.getAllUnconfirmedParkings);
-
+    this.rentservice.getAllStatus(this.parkingForRentId).subscribe((data)=>{this.getAllUnconfirmedParkings=data
     },
     error=>MaterialService.toast("Неможливо вибрати"+ error.error.message)
     )
@@ -179,10 +177,9 @@ export class RentComponent implements OnInit,AfterViewInit{
       end:this.end.date,
       parkingForRentId:this.parkingForRentId
     }).subscribe(()=>{MaterialService.toast("Запит прийнятий в обробку")
-
-
-    },error=>MaterialService.toast("Помилка запиту " + error.error.message)),
-    this.rentpage.close()
+     },error=>MaterialService.toast("Помилка запиту " + error.error.message))
+     this.rentpage.close()
+     this.rentservice.sendMailReservation(this.parkingForRentId).subscribe(()=>{})
   }
   closeform(){
     this.rentpage.close();
