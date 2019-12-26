@@ -50,7 +50,7 @@ module.exports.getstreet= async function(req,res){
 }
 module.exports.getparking= async function(req,res){
     try{   
-     const oneparking=await Application.find({street:req.params.id})
+     const oneparking=await (await Application.find({street:req.params.id})).filter(f=>moment(f.to)>moment());
      const findUser=await Auth.findOne({information:{parkingaddress:req.params.id}})
      res.status(200).json({oneparking,findUser})
      
@@ -72,6 +72,7 @@ module.exports.getApplicationById= async function(req,res){
 module.exports.sendMailConfirm=async function(req,res){
         const getRentId=await Rent.findById({_id:req.params.id}).select('userId')
         const getMail=await Auth.findById({_id:getRentId.userId}).select('email')  
+        const getPhone=await Auth.findById({_id:getRentId.userId}).select('contactphone')
     try{
         var transporter = nodemailer.createTransport({
             host: 'smtp.ukr.net',
@@ -87,8 +88,9 @@ module.exports.sendMailConfirm=async function(req,res){
             from: 'serviceparking@ukr.net',
             to: getMail.email,
             subject: 'Підтверження бронювання паркомісця',
-            //text: 'Hi, mail sent.',
-            html:'<b>Ваше бронювання в паркінгу підтвержено.</b> <br> <span>Дякуємо що скористались сервісом бронювання паркомісць.<br></span> <site>www.parking.kiev.ua<site>/'
+            html:'<b>Ваше бронювання в паркінгу підтвержено.</b> <br> <span>Дякуємо що скористались сервісом бронювання паркомісць.<br></span> <site>www.parking.kiev.ua<site>/',
+            text: 'Телефон власника' + getPhone.contactphone 
+
           };
           
           transporter.sendMail(mail, (error, info)=>{

@@ -11,6 +11,8 @@ import { TokenInterceptor } from './shared/classes/tokeninterceptor';
 import { OfferComponent } from './components/offer/offer.component';
 import { ApplicantsComponent } from './components/offer/applicants/applicants.component';
 import { RentComponent } from './components/offer/rent/rent.component';
+import { AboutComponent } from './components/about/about.component';
+import { ContactComponent } from './components/contact/contact.component';
 
 
 @NgModule({
@@ -19,7 +21,9 @@ import { RentComponent } from './components/offer/rent/rent.component';
     MainPageComponent,
     OfferComponent,
     ApplicantsComponent,
-    RentComponent
+    RentComponent,
+    AboutComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,
@@ -32,6 +36,7 @@ import { RentComponent } from './components/offer/rent/rent.component';
   providers: [
     {provide:HTTP_INTERCEPTORS,multi:true,useClass:TokenInterceptor}
   ],
+  exports:[],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

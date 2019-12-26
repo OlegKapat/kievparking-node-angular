@@ -1,7 +1,6 @@
 import { Observable,of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import {Resolve, ActivatedRouteSnapshot} from '@angular/router'
-import { delay } from 'rxjs/operators';
 import { ParkingService } from 'src/app/components/admin/shared/services/parking.service';
 
 

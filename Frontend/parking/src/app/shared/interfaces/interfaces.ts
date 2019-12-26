@@ -36,3 +36,9 @@ export interface Rent{
   end:Date,
   parkingForRentId:string
 }
+export interface Contact{
+  email:string,
+  name:string,
+  phohe?:string,
+  text:string
+}

@@ -3,8 +3,8 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Київ паркінг</title>
-  
+  <!-- <title>Київ паркінг</title> -->
+
   <!-- CSS  -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -15,9 +15,9 @@
       <a id="logo-container" href="#" class="brand-logo"><img src="../assets/images/Logo.png"></a>
       <ul class="right hide-on-med-and-down">
           <li><a href="#">Головна</a></li>
-        <li><a href="#">Про нас</a></li>
+        <li><a [routerLink]="['/aboutus']">Про нас</a></li>
         <li><a [routerLink]= "['/offer']" routerLinkActive="active">Бронювати</a></li>
-        <li><a href="#">Контакты</a></li>
+        <li><a [routerLink]="['/contact']">Контакты</a></li>
         <li> <a [routerLink]="'/'" (click)="deleteSession()"><i class=" medium material-icons">exit_to_app</i></a></li>
       </ul>
 
@@ -66,6 +66,7 @@
       Розробка <a class="brown-text text-lighten-3" href="http://lito-webdesign.com.ua">Lito-WEBDesign</a>
       </div>
     </div>
+    
   </footer>
   <!--  Scripts-->
   <script  type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>

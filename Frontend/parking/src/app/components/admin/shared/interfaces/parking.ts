@@ -8,3 +8,7 @@ export interface Parking{
   security:string,
   imageSrc?:string
 }
+export interface Manager{
+  name:string,
+  password:boolean
+}

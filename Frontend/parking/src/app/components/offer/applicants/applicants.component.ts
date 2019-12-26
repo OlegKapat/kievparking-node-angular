@@ -1,11 +1,12 @@
 
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, OnDestroy, EventEmitter, Output, OnChanges } from '@angular/core';
 import { MaterialService, MaterialDatepicker} from '../../../shared/classes/material.service'
 import { RentService } from '../../../shared/services/rent.service';
 import { Rent } from 'src/app/shared/interfaces/interfaces';
 import { ApplocationService } from 'src/app/shared/services/applocation.service';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -17,6 +18,7 @@ export class ApplicantsComponent implements OnInit,AfterViewInit,OnDestroy {
   @ViewChild('picker1',{static:true}) from:ElementRef;
   @ViewChild('picker2',{static:true}) to:ElementRef;
   @Output() childSubmit=new EventEmitter()
+  private unSubscribe=new Subject();
   start:MaterialDatepicker;
   end:MaterialDatepicker;
   applicantForm:FormGroup;
@@ -32,7 +34,7 @@ export class ApplicantsComponent implements OnInit,AfterViewInit,OnDestroy {
      two:new FormControl('',Validators.required),
      description:new FormControl('')
    })
-     this.rentservice.getRentId().subscribe((data)=>this.dataRent=data)
+     this.rentservice.getRentId().pipe(takeUntil(this.unSubscribe)).subscribe((data)=>this.dataRent=data)
   }
   ngAfterViewInit(){
     MaterialService.updateTextInput()
@@ -62,14 +64,16 @@ export class ApplicantsComponent implements OnInit,AfterViewInit,OnDestroy {
     ngOnDestroy(){
       this.start.destroy()
       this.end.destroy();
+      this.unSubscribe.next();
+      this.unSubscribe.complete();
     }
    confirm(id){
-    combineLatest(this.rentservice.changeStatus(id,true),this.applicantservice.sendConfirmationEmail(id)).
-         subscribe((data:[any,any])=>MaterialService.toast("Бронювання підтвержено"),error=>MaterialService.toast(error.error.message)
-         )
+    combineLatest(this.rentservice.changeStatus(id,true),this.applicantservice.sendConfirmationEmail(id)).pipe(takeUntil(this.unSubscribe))
+         .subscribe((data:[any,any])=>{},error=>MaterialService.toast(error.error.message))
+         MaterialService.toast("Бронювання підтвержено")
    }
    reject(id){
-    this.rentservice.changeStatus(id,false).subscribe(()=>MaterialService.toast("Бронювання відхилено"),
+    this.rentservice.changeStatus(id,false).pipe(takeUntil(this.unSubscribe)).subscribe(()=>MaterialService.toast("Бронювання відхилено"),
     error=>MaterialService.toast(error)
     )}
 

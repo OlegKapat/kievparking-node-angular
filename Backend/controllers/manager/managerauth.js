@@ -56,3 +56,27 @@ module.exports.register= async function(req,res){
     }
 
 }
+module.exports.getlogin= async function(req,res){
+    try{
+        const candidate= await ManagerAuth.findOne({name:req.params.id}) 
+        if(candidate){
+            const passwordResult=bcrypt.compareSync(req.body.password,candidate.password)   
+            if(passwordResult){
+                res.status(200).json({password:true})
+            }
+            else{
+                res.status(403).json({
+                    password:false
+                })
+        }   
+    }
+    else{
+        res.status(404).json({
+            message:"Користувач не знайдений"
+        })
+    } 
+}
+catch(e){
+    errorHandler(res,e)
+}
+}

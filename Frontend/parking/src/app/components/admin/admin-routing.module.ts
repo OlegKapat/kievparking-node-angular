@@ -14,7 +14,7 @@ const routes:Routes=[
   ]}
 ]
 @NgModule({
-  declarations: [AdminComponent],
+  declarations: [],
   imports: [
     RouterModule.forChild(routes)
   ],

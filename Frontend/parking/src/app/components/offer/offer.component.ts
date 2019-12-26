@@ -25,13 +25,13 @@ export class OfferComponent implements OnInit,AfterViewInit,OnDestroy{
    this.owner=JSON.parse(localStorage['owner'])
   }
   ngAfterViewInit(){
-    this.router.events.subscribe((evet)=>console.log(evet))
+    this.router.events.subscribe((evet)=>{})
   }
   submitForm(data){
    this.aSub=this.applicatioService.addApplication(data).subscribe(()=>{
      MaterialService.toast("Заявку подано")
 
-   }, error=>{MaterialService.toast(error.error.message),console.log(error.error.message)}
+   }, error=>{MaterialService.toast(error.error.message)}
 
    )
   }

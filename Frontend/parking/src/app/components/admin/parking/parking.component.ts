@@ -1,12 +1,10 @@
 
-import { Params,Router,ActivatedRoute } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
 import { Parking } from './../shared/interfaces/parking';
 import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import {MaterialService,MaterialInstance} from '../../../shared/classes/material.service'
 import { ParkingService } from '../shared/services/parking.service';
-import { DomSanitizer } from '@angular/platform-browser';
 import {Subject} from "rxjs";
 import {takeUntil} from 'rxjs/Operators'
 

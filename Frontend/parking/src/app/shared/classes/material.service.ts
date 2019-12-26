@@ -1,3 +1,4 @@
+
 import { MaterialInstance } from './material.service';
 import { ElementRef } from '@angular/core';
 
@@ -57,5 +58,11 @@ static initTooltip(ref:ElementRef):MaterialInstance{
   }
   static initTable (ref:ElementRef):MaterialInstance{
      return M.Tabs.init(ref.nativeElement,{swipeable:true})
+  }
+  static initParalax(ref:ElementRef):MaterialInstance{
+    return M.Parallax.init(ref.nativeElement,{responsiveThreshold:520})
+  }
+  static initCollapsible(ref:ElementRef):MaterialInstance{
+    return M.Collapsible.init(ref.nativeElement)
   }
 }

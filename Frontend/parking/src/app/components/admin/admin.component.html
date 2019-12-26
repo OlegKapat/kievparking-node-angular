@@ -5,11 +5,11 @@
       <div class="col s12 card-panel teal lighten-2">
            <h3>Панель адміністратора керування сайтом</h3>
       </div>
-      <section>
+      <section >
         <div class="row">
           <div class="col s4">
             <div class="menu">
-                  <a [routerLink]="'parking'" routerLinkActive="active">
+                  <a [routerLink]="'parking'" routerLinkActive="active" >
                     <div id="btn1" class="button">
                       <h5> Паркінги <i class=" small material-icons">directions_car</i></h5>
 
@@ -31,13 +31,33 @@
           </div>
         </div>
 
-            <div class="col s8">
+            <div class="col s8" *ngIf="loginvalidator">
 
-              <router-outlet></router-outlet>
+              <router-outlet ></router-outlet>
             </div>
 
         </div>
       </section>
       </div>
+  </div>
+  <div id="modal" class="modal" #loginadmin>
+    <div class="modal-content center">
+      <h4>Меню адміністратора </h4>
+    </div>
+       <form [formGroup]="managerForm" class="col s12">
+          <div class="input-field col s12">
+              <input id="name" type="text" class="validate input-field col s12" formControlName="name" >
+              <label for="name">Імя</label>
+            </div>
+            <div class="input-field col s12">
+                <input  id="password-log" type="password" class="validate input-field col s12" formControlName="password">
+                <label for="password-log">Пароль</label>
+              </div>
+          <div class="btn-group center">
+              <button (click)="onLoginManeger()" [disabled]="managerForm.invalid" type="button" class="waves-effect waves-light btn-large">Авторизуватись</button>&nbsp;
+              <button  type="button"(click)="send()" class="modal-close waves-effect waves-blue waves-light btn-large">Відміна</button>
+            </div>
+       </form>
+
   </div>
 </main>

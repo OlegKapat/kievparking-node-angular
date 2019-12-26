@@ -62,3 +62,9 @@ div.button:active {
   margin-top: 10px;
 
 }
+#modal{
+  overflow-x: hidden;
+}
+.btn-group{
+  margin-bottom: 10px;
+}

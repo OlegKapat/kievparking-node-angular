@@ -1,16 +1,15 @@
 
-import { Component, OnInit,ViewChild,ElementRef,AfterViewInit,OnDestroy, AfterContentInit, ChangeDetectionStrategy, OnChanges, Input} from '@angular/core';
+
+import { Component, OnInit,ViewChild,ElementRef,AfterViewInit,OnDestroy, AfterContentInit, ChangeDetectionStrategy,Input} from '@angular/core';
 import {FormGroup,FormControl,Validators} from '@angular/forms'
 import {MaterialService,MaterialInstance} from '../../shared/classes/material.service';
 import { AuthService } from './../../shared/services/auth.service';
 import * as M from "materialize-css";
-import { Subscription } from 'rxjs';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Subscription, Subject } from 'rxjs';
+import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { ParkingService } from '../admin/shared/services/parking.service';
 import { Parking } from '../admin/shared/interfaces/parking';
-import { switchMap,tap } from 'rxjs/operators';
-
-
+import { switchMap,tap, takeUntil } from 'rxjs/operators';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -18,16 +17,17 @@ import { switchMap,tap } from 'rxjs/operators';
   templateUrl: './main-page.component.html',
   styleUrls: ['./main-page.component.css']
 })
-export class MainPageComponent implements OnInit,AfterViewInit,OnDestroy,AfterContentInit {
+export  class MainPageComponent implements OnInit,AfterViewInit,OnDestroy,AfterContentInit {
   options={};
   @ViewChild('modalEnter',{static:false}) modalenterRef:ElementRef;
   @ViewChild('login',{static:false}) loginRef:ElementRef;
   @ViewChild('registration',{static:false}) registrationRef:ElementRef;
   @ViewChild('input',{static:false}) inputRef:ElementRef;
   @ViewChild('select',{static:true}) selectRef:ElementRef;
-  @ViewChild('selectcity',{static:true}) selectcityRef:ElementRef;
-  @ViewChild('selectdistrict',{static:true}) selectdistrictRef:ElementRef;
-  @Input('item._id') setId:string
+  @ViewChild('selectcity',{static:false}) selectcityRef:ElementRef;
+  @ViewChild('selectdistrict',{static:false}) selectdistrictRef:ElementRef;
+  @Input('item._id') setId:string;
+  private unSubscribe=new Subject();
   info:string
   modal:MaterialInstance;
   modalLogin:MaterialInstance;
@@ -50,7 +50,8 @@ export class MainPageComponent implements OnInit,AfterViewInit,OnDestroy,AfterCo
   somedata:any
 
   constructor(private auth:AuthService, private activeroute:ActivatedRoute,
-               private parkingService:ParkingService,private router:Router) { }
+               private parkingService:ParkingService,private router:Router,
+              ) { }
 
   ngOnInit() {
     MaterialService.updateTextInput()
@@ -60,7 +61,6 @@ export class MainPageComponent implements OnInit,AfterViewInit,OnDestroy,AfterCo
       email:new FormControl(null,[Validators.required,Validators.email]),
       password:new FormControl(null,[Validators.required,Validators.minLength(6)])
     })
-
 
     this.activeroute.queryParams.subscribe((params:Params)=> {
         if(params['registered']) {
@@ -72,7 +72,6 @@ export class MainPageComponent implements OnInit,AfterViewInit,OnDestroy,AfterCo
           MaterialService.toast("Поточна сессія закінчилась")
         } else if(params['login']){
           MaterialService.toast('Вітаємо вас')
-
         }
     })
 
@@ -88,7 +87,7 @@ export class MainPageComponent implements OnInit,AfterViewInit,OnDestroy,AfterCo
        district:new FormControl('',Validators.required),
        address:new FormControl('',Validators.required),
        phone:new FormControl('',Validators.required),
-       parkingId:new FormControl('11111111'),
+       parkingId:new FormControl(''),
        place:new FormControl('',[Validators.required,Validators.pattern(/^(\d){1,2}$/)])
        })
     })
@@ -102,6 +101,7 @@ export class MainPageComponent implements OnInit,AfterViewInit,OnDestroy,AfterCo
     MaterialService.initSelect(this.selectRef);
     MaterialService.initSelect(this.selectcityRef);
     MaterialService.initSelect(this.selectdistrictRef);
+
   }
 
    firstEnter(){
@@ -140,7 +140,6 @@ export class MainPageComponent implements OnInit,AfterViewInit,OnDestroy,AfterCo
     this.aSubLogin=this.auth.login(this.loginForm.value).subscribe((data)=>{
       localStorage['owner']=JSON.stringify(data.owner)
       if(data){
-
         MaterialService.toast(`Вітаємо ${data.name}`)
         this.router.navigate(['/offer'],{queryParams:{
           login:true,
@@ -148,8 +147,7 @@ export class MainPageComponent implements OnInit,AfterViewInit,OnDestroy,AfterCo
        }})
 
       }
-
-    },error=>MaterialService.toast("Невірний логін чи пароль"))
+    },error=>MaterialService.toast("Невірний логін чи пароль"+ error))
 
     this.modalLogin.close()
     this.loginForm.reset();
@@ -161,6 +159,8 @@ export class MainPageComponent implements OnInit,AfterViewInit,OnDestroy,AfterCo
       else if(this.aSubRegister){
         this.aSubRegister.unsubscribe()
       }
+      this.unSubscribe.next();
+      this.unSubscribe.complete();
   }
   onSubmitRegister(){
     this. aSubRegister=this.auth.registration(this.registrationForm.value,this.selectedAddress, this.selectedId,this.image)
@@ -176,7 +176,7 @@ export class MainPageComponent implements OnInit,AfterViewInit,OnDestroy,AfterCo
   }
 onChanges(){
   this.registrationForm.get('owner').valueChanges.pipe(tap(()=>{this.checkOwner=!this.checkOwner}),switchMap(()=> {
-   return this.auth.getData() })).subscribe((data)=>{this.parkingAddress=data}),error=>MaterialService.toast(error.message)
+   return this.auth.getData() })).pipe(takeUntil(this.unSubscribe)).subscribe((data)=>{this.parkingAddress=data}),error=>MaterialService.toast(error.message)
 
 }
 ngAfterContentInit(){
@@ -190,4 +190,5 @@ ngAfterContentInit(){
      this.selectedId=onevalue[1];
 
  }
+
 }

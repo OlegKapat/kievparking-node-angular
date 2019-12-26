@@ -1,8 +1,9 @@
+import { Manager } from '../../components/admin/shared/interfaces/parking';
 import { Injectable } from '@angular/core';
 import {User} from '../interfaces/interfaces';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import {tap, catchError} from 'rxjs/operators'
+import {tap, catchError, map} from 'rxjs/operators'
 import { Parking } from 'src/app/components/admin/shared/interfaces/parking';
 
 @Injectable({
@@ -24,9 +25,6 @@ export class AuthService {
         name;
 
      }))
-
-
-
   }
   setToken(token:string){
      this.token=token;
@@ -75,5 +73,8 @@ export class AuthService {
   }
   getData():Observable<Parking[]>{
     return this.http.get<Parking[]>('/api/auth/getparkingRegister').pipe(catchError(error=>{return throwError(error)}));
+  }
+  getManagerLogin(name:string,form):Observable<Manager>{
+      return this.http.post<Manager>(`/api/managerauth/getmanager/${name}`,form)
   }
 }

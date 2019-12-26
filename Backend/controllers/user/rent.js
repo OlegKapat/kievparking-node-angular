@@ -34,11 +34,19 @@ module.exports.addrentparking = async function(req,res){
 }
 
 module.exports.getRentById = async function(req,res){
-   const parkingId=await Application.findOne({userId:req.user.id});
    try{
-         getrent= await Rent.find({parkingForRentId:parkingId})
-         res.status(201).json(getrent) 
-              
+       const parkingId=await Application.findOne({userId:req.user.id});
+        const getrent= await Rent.find({parkingForRentId:parkingId}).where({termstatus:true})
+        getrent.forEach(value=>{ 
+           if( moment(value.to).format('DD.MM.YYYY') < moment().format('DD.MM.YYYY')){
+               Rent.findOneAndUpdate(
+                 {_id:value.id},
+                 {$set:{ termstatus:false}},
+                 {new:true}
+              ).then()
+           }  
+        })
+        res.status(201).json(getrent)          
    }
    catch(e){
    errorHandler(res,e)

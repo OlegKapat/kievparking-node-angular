@@ -4,7 +4,7 @@
     <div class="section no-pad-bot">
       <div class="container">
         <br><br>
-        <h1 class="header center teal-text text-lighten-2">Паркінг на Палладіна </h1>
+        <h1 class="header center teal-text text-lighten-2">Паркінг сервіс</h1>
         <div class="row center">
           <h5 class="header col s12 light">Сервіс з пошуку та оренди вільного  паркомісця в паркінгу</h5>
         </div>
@@ -47,7 +47,7 @@
             <h2 class="center brown-text"><i class="material-icons">settings</i></h2>
             <h5 class="center">Як це працює</h5>
 
-            <p class="light">Власник паркомісця надає згоду на здачу в аренду свого паркомісця на визначений термін. Зацікавлена особа бронює запрпоноване паркомісце та сплачує оренду на рахунок ОСББ. Правління ОСББ зараховує 40% відсотків від внеску в рахунок сплати на утримання пракінгу.  </p>
+            <p class="light">Власник паркомісця надає згоду на здачу в аренду свого паркомісця на визначений термін. Зацікавлена особа бронює запрпоноване паркомісце та домовляється з власником про деталі оренди.  </p>
           </div>
         </div>
       </div>
@@ -126,6 +126,8 @@
      </form>
 
 </div>
+
+
 <!--registration-->
  <div id="modal" class="modal " #registration>
   <div class="modal-content">
@@ -133,6 +135,7 @@
   </div>
      <form [formGroup]="registrationForm" (ngSubmit)=onSubmitRegister() class="col s12" >
         <div class="input-field col s12">
+            <i class="material-icons prefix">account_circle</i>
             <input id="personname" type="text" class="validate input-field col s12" formControlName='name' [ngClass]="{'invalid':registrationForm.get('name').invalid && registrationForm.get('name').touched}">
             <label for="personname">Ім'я</label>
             <span class="red-text" *ngIf="registrationForm.get('name').invalid && registrationForm.get('name').touched">
@@ -140,6 +143,7 @@
             </span>
           </div>
         <div class="input-field col s12">
+            <i class="material-icons prefix">contact_mail</i>
             <input id="email" type="email" class="validate input-field col s12" formControlName='email' [ngClass]="{'invalid':registrationForm.get('email').invalid && registrationForm.get('email').touched}">
             <label for="email">Email</label>
             <span class="red-text" *ngIf="registrationForm.get('email').invalid && registrationForm.get('email').touched">
@@ -148,6 +152,7 @@
             </span>
           </div>
           <div class="input-field col s12">
+              <i class="material-icons prefix">vpn_lock</i>
               <input  id="password" type="password" class="validate" formControlName='password' [ngClass]="{'invalid':registrationForm.get('password').invalid && registrationForm.get('password').touched}">
               <label for="password">Пароль</label>
               <span class="red-text" *ngIf="registrationForm.get('password').invalid && registrationForm.get('password').touched">
@@ -201,6 +206,7 @@
 
 
                     <div class="input-field col s12">
+                        <i class="material-icons prefix">phone</i>
                         <input id="phone" type="text" class="validate input-field col s12" formControlName='phone' [ngClass]="{'invalid':registrationForm.get('information.phone').invalid && registrationForm.get('information.phone').touched}">
                         <label for="phone">Телефон</label>
                         <span class="red-text" *ngIf="registrationForm.get('information.phone').invalid && registrationForm.get('information.phone').touched">
@@ -208,6 +214,7 @@
                         </span>
                       </div>
                       <div class="input-field col s12">
+                          <i class="material-icons prefix">directions_car</i>
                           <input id="place" type="number" class="validate input-field col s12" formControlName='place' [ngClass]="{'invalid':registrationForm.get('information.place').invalid && registrationForm.get('information.place').touched}">
                           <label for="place">Місце</label>
                           <span class="red-text" *ngIf="registrationForm.get('information.place').invalid && registrationForm.get('information.place').touched">
