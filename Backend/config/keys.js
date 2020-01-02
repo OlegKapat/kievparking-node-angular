@@ -1,6 +1,6 @@
 module.exports={
-    mongoURI:'mongodb+srv://bombastik:1q2q3q4q@cluster0-e5gje.mongodb.net/kievparking?retryWrites=true&w=majority',
+    mongoURI:,
     secretkey:'kievparking',
     email:'serviceparking@ukr.net',
-    password:'1q2q3q4q'
+    password:
 }
